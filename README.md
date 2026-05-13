@@ -34,6 +34,14 @@ Tap to spin, collect rewards, dodge bombs, cash out at the perfect moment.
 
 ---
 
+## 🌼 How to Run
+
+1. Open the project in **Unity 2021.3.45f2 LTS**
+2. Run `Vertigo → Build → Full Rebuild` once after a fresh checkout
+3. Open `Assets/Scenes/SampleScene.unity` and press **Play** ▶️
+
+---
+
 ## ✨ Highlights
 
 The bits I'm a little proud of:
@@ -44,31 +52,6 @@ The bits I'm a little proud of:
 - 🎀 **One-button rebuild** — `Vertigo → Build → Full Rebuild` reconstructs scene + UI from scratch
 - 💫 **Reward sampler with quotas** — per-category limits + a small dedupe so the same icon never sits next to itself
 - 🌺 **Object pooling** — reward icons & list rows, no GC hiccups during spins
-
----
-
-## 🎨 Tech & Tools
-
-- 🦋 **PrimeTween** for UI animations (panels, scale punches, wheel rotation)
-- 💫 One custom particle effect for the reward-fly burst that lands on the side panel
-- 📦 Sprite Atlas split into **6 categories** (Icon, Spin, Button, Panel, Frame, VFX)
-- 💌 **TextMeshPro** on every label
-- 📐 Canvas Scaler `ScaleWithScreenSize`, reference **1920×1080**, *Expand* mode
-- 📲 **20:9 / 16:9 / 4:3** aspect ratios handled via Canvas Scaler Expand + center anchoring
-
----
-
-## 🌷 Unity / UI Brief — Checklist
-
-- ✅ Canvas Scaler `ScaleWithScreenSize`, reference 1920×1080, Expand mode
-- ✅ 20:9 / 16:9 / 4:3 aspect ratios via Canvas Scaler Expand + center anchoring
-- ✅ TextMeshPro on all labels — changeable labels use the `*_value` suffix (e.g. `reviveCost_value`)
-- ✅ UI hierarchy follows `ui_image_*` / `ui_button_*` naming (general → specific)
-- ✅ Decorative graphics have `raycastTarget` and `maskable` off — an editor pass enforces this across the scene
-- ✅ ScriptableObjects under `Assets/Configs/` store all wheel, zone and reward content
-- ✅ PrimeTween used for UI tweens
-- ✅ Sprite Atlas split into 6 categories
-- ✅ Whole UI can be rebuilt from `Vertigo → Build → Full Rebuild`
 
 ---
 
@@ -153,39 +136,28 @@ Assets/
 
 ---
 
-## 🌼 How to Run
+## 🎨 Tech & Tools
 
-1. Open the project in **Unity 2021.3.45f2 LTS**
-2. Run `Vertigo → Build → Full Rebuild` once after a fresh checkout
-3. Open `Assets/Scenes/SampleScene.unity` and press **Play** ▶️
-
----
-
-## 🎀 Build / Release
-
-### Android APK
-- `Tools → Build → Android APK` or `Tools → Build → Android APK + Run`
-- Bundle id: `com.simay.vertigowheel`
-- AndroidMinSdkVersion: 22
-- Output: `Build/VertigoWheel.apk`
-
-### GitHub Release
-The APK is shared via a GitHub Release rather than committed to the repo.
-
-### 📲 APK Download
-[**Download APK ✨**](https://drive.google.com/file/d/1VxuD5v-L_xG7tuDoB4XAF-BY3kkhfsjW/view?usp=sharing)
+- 🦋 **PrimeTween** for UI animations (panels, scale punches, wheel rotation)
+- 💫 One custom particle effect for the reward-fly burst that lands on the side panel
+- 📦 Sprite Atlas split into **6 categories** (Icon, Spin, Button, Panel, Frame, VFX)
+- 💌 **TextMeshPro** on every label
+- 📐 Canvas Scaler `ScaleWithScreenSize`, reference **1920×1080**, *Expand* mode
+- 📲 **20:9 / 16:9 / 4:3** aspect ratios handled via Canvas Scaler Expand + center anchoring
 
 ---
 
-## 📸 Screenshots
+## 🌷 Unity / UI Brief — Checklist
 
-Screenshots live under `Docs/Screenshots/`.
-
-| Aspect | Screenshot | Video |
-|---|---|---|
-
-| **16:9** | ![16:9](Docs/Screenshots/aspect_16-9.png) | _TODO_ |
-| **4:3**  | _TODO (`Docs/Screenshots/aspect_4-3.png`)_ | _TODO_ |
+- ✅ Canvas Scaler `ScaleWithScreenSize`, reference 1920×1080, Expand mode
+- ✅ 20:9 / 16:9 / 4:3 aspect ratios via Canvas Scaler Expand + center anchoring
+- ✅ TextMeshPro on all labels — changeable labels use the `*_value` suffix (e.g. `reviveCost_value`)
+- ✅ UI hierarchy follows `ui_image_*` / `ui_button_*` naming (general → specific)
+- ✅ Decorative graphics have `raycastTarget` and `maskable` off — an editor pass enforces this across the scene
+- ✅ ScriptableObjects under `Assets/Configs/` store all wheel, zone and reward content
+- ✅ PrimeTween used for UI tweens
+- ✅ Sprite Atlas split into 6 categories
+- ✅ Whole UI can be rebuilt from `Vertigo → Build → Full Rebuild`
 
 ---
 
@@ -213,6 +185,34 @@ They're built once when the panel opens.
 
 ### ⏰ A small note on timing
 I submitted slightly later than planned because I refactored the UI from a mostly code-driven setup into a more standard prefab-based structure late in development. The current shape is much closer to how production UI is usually authored, and I think the result justifies the slip.
+
+---
+
+## 🎀 Build / Release
+
+### Android APK
+- `Tools → Build → Android APK` or `Tools → Build → Android APK + Run`
+- Bundle id: `com.simay.vertigowheel`
+- AndroidMinSdkVersion: 22
+- Output: `Build/VertigoWheel.apk`
+
+### GitHub Release
+The APK is shared via a GitHub Release rather than committed to the repo.
+
+### 📲 APK Download
+[**Download APK ✨**](https://drive.google.com/file/d/1VxuD5v-L_xG7tuDoB4XAF-BY3kkhfsjW/view?usp=sharing)
+
+---
+
+## 📸 Screenshots
+
+Screenshots live under `Docs/Screenshots/`.
+
+| Aspect | Screenshot | Video |
+|---|---|---|
+| **20:9** | ![20:9](Docs/Screenshots/aspect_20-9.png) | ![gameplay](Docs/Screenshots/gameplay_20-9.gif) |
+| **16:9** | ![16:9](Docs/Screenshots/aspect_16-9.png) | _TODO_ |
+| **4:3**  | ![4:3](Docs/Screenshots/aspect_4-3.png) | _TODO_ |
 
 ---
 
