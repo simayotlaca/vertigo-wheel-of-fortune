@@ -22,14 +22,18 @@ A Unity 2021.3.45f2 case study for the Vertigo Games developer brief. Spin the w
 2. Run `Vertigo → Build → Full Rebuild` once after a fresh checkout
 3. Open `Assets/Scenes/SampleScene.unity` and press **Play**
 
-### ✨ Highlights
+### ✨ Technical Highlights
 
-- `WheelLogic` is pure C#, runs without a scene, fully testable
-- State machine `Ready → Turning → Landing → Reward → Death`, each state owns its transitions
-- All wheel, zone and reward content lives in ScriptableObjects under `Assets/Configs/`
-- One-button rebuild via `Vertigo → Build → Full Rebuild`
-- Reward sampler with per-category quotas and adjacency dedupe
-- Reward icons and list rows pooled, no GC during spins
+- Pure C# wheel logic separated from the Unity scene lifecycle
+- Deterministic rebuild pipeline for scene/UI generation
+- ScriptableObject-driven reward and zone configuration
+- Lightweight pooled UI elements for repeated spin flows
+
+#### Animation Stack
+
+I used PrimeTween for UI/gameplay transitions because its allocation-conscious API and struct-based tween flow fit well with the project's lightweight runtime architecture.
+
+The wheel relies heavily on chained transitions, strike animations, overlays, and repeated UI motion during spins, so keeping animation flow predictable and easy to orchestrate was more important than building a custom tween solution from scratch.
 
 ### ⚔️ Architecture
 
@@ -169,8 +173,6 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
 ### 💎 Engineering Decisions
 
 **Revive uses a one-shot logic flag, not a pool-level slot skip.** After paying gold to revive, the next spin gets one bomb-free guarantee via `forceNoBombNextSpin` on `WheelLogic`. If RNG lands on the bomb slot, we redirect to a neighbouring slice. The bomb slice is still visually on the wheel for that one spin. A pool-level skip would have meant rebuilding the slice list mid-flow; the logic-level guard was the smaller, safer change. The flag clears itself after a single spin so subsequent zones behave normally.
-
-**PrimeTween over a custom tween system.** The only custom animation code is the reward-fly burst, a small particle effect. Wheel cases are not the place to reinvent a tween library.
 
 **MetaProgress rows are not pooled.** They are built once when the panel opens. There are only a handful; pooling would add complexity without a real win.
 
