@@ -183,26 +183,21 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
 
 #### 📸 Screenshots
 
-<div align="center">
+<p align="center">
+  <img src="Docs/Screenshots/aspect_20-9.png" width="720" alt="20:9 main aspect"/>
+  <br/>
+  <sub><b>20:9</b> · main aspect</sub>
+</p>
 
-<table>
-<tr>
-<td align="center" width="33%">
-<img src="Docs/Screenshots/aspect_20-9.png" width="280" alt="20:9 main"/><br/>
-<sub><b>20:9</b> · main aspect</sub>
-</td>
-<td align="center" width="33%">
-<img src="Docs/Screenshots/aspect_16-9.png" width="280" alt="16:9 death"/><br/>
-<sub><b>16:9</b> · death &amp; revive</sub>
-</td>
-<td align="center" width="33%">
-<img src="Docs/Screenshots/aspect_4-3.png" width="280" alt="4:3 full UI"/><br/>
-<sub><b>4:3</b> · full UI with inventory</sub>
-</td>
-</tr>
-</table>
-
-</div>
+<p align="center">
+  <img src="Docs/Screenshots/aspect_16-9.png" width="400" alt="16:9 death and revive"/>
+  &nbsp;&nbsp;
+  <img src="Docs/Screenshots/aspect_4-3.png" width="300" alt="4:3 full UI with inventory"/>
+  <br/>
+  <sub><b>16:9</b> · death &amp; revive</sub>
+  &nbsp;&nbsp;·&nbsp;&nbsp;
+  <sub><b>4:3</b> · full UI with inventory</sub>
+</p>
 
 #### 🚀 Build and Release
 
