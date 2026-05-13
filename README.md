@@ -30,12 +30,6 @@ A Unity case study for the **Vertigo Games** developer brief. Spin the wheel, ho
 | Revive | Pay gold to keep your loot. Each revive costs more |
 | Persistence | Banked rewards survive between sessions (PlayerPrefs) |
 
-#### 🌼 How to Run
-
-1. Open the project in **Unity 2021.3.45f2 LTS**
-2. Run `Vertigo → Build → Full Rebuild` once after a fresh checkout
-3. Open `Assets/Scenes/SampleScene.unity` and press **Play**
-
 #### ✨ Technical Highlights
 
 - Pure C# wheel logic separated from the Unity scene lifecycle
@@ -225,12 +219,18 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
   <sub><b>4:3</b> · Inventory Layout</sub>
 </p>
 
-#### 🚀 Build and Release
+#### 🚀 Run & Build
 
-- Unity version: Unity 2021.3.45f2
-- Rebuild from Unity: `Vertigo → Build → Full Rebuild`
-- Android build: `Tools → Build → Android APK` or `Tools → Build → Android APK + Run`
-- Output APK: `Build/VertigoWheel.apk`
+**Run in Unity**
+
+1. Open the project in **Unity 2021.3.45f2 LTS**
+2. Run `Vertigo → Build → Full Rebuild` once after a fresh checkout
+3. Open `Assets/Scenes/SampleScene.unity` and press **Play**
+
+**Android build**
+
+- `Tools → Build → Android APK` (or `Tools → Build → Android APK + Run` to deploy to a connected device)
+- Output: `Build/VertigoWheel.apk`
 
 <div align="center">
 
