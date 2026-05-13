@@ -236,9 +236,10 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
 
 #### 🚀 Build and Release
 
-- `Tools → Build → Android APK` or `Tools → Build → Android APK + Run`
-- Bundle id: `com.simay.vertigowheel` &nbsp;·&nbsp; AndroidMinSdkVersion: 22 &nbsp;·&nbsp; Output: `Build/VertigoWheel.apk`
-- The APK is shared via a GitHub Release rather than committed to the repo.
+- Unity version: Unity 2021.3.45f2
+- Rebuild from Unity: `Vertigo → Build → Full Rebuild`
+- Android build: `Tools → Build → Android APK` or `Tools → Build → Android APK + Run`
+- Output APK: `Build/VertigoWheel.apk`
 
 <div align="center">
 
