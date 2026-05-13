@@ -139,9 +139,6 @@ Spin states live in `Assets/Scripts/Wheel/Controller/`: `ReadyState`, `TurningSt
 </td></tr>
 </table>
 
-<details>
-<summary>Folder tree</summary>
-
 ```
 Assets/
 └─ Scripts/
@@ -168,8 +165,6 @@ Assets/
 ├─ Plugins/            ⎪
 └─ Scenes/             ⎭
 ```
-
-</details>
 
 #### 🎨 Tech Stack
 
