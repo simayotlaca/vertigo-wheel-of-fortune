@@ -12,6 +12,10 @@ public class RunExitController : MonoBehaviour
     [SerializeField] private DeathConfirmPanel deathConfirmPanel;
     [SerializeField] private RewardCollectAnimator collectAnimator;
 
+    [Header("UI references (controller pushes state to these)")]
+    [SerializeField] private ZoneHUD zoneHUD;
+    [SerializeField] private BlurBackgroundOverlay blurOverlay;
+
     [Header("Exit button")]
     [SerializeField] private Button exitButton;
 
@@ -44,16 +48,13 @@ public class RunExitController : MonoBehaviour
         if (kind == ExitKind.FreshStart)
         {
             SetState(ExitFlowState.FreshStartConfirm);
-            if (exitConfirmPanel != null) exitConfirmPanel.ShowFreshStart();
         }
         else if (kind == ExitKind.SafeExit)
         {
             SetState(ExitFlowState.CollectConfirm);
-            if (exitConfirmPanel != null) exitConfirmPanel.ShowSafeExit();
         }
         else
         {
-
             NotifyExitUnavailable();
         }
     }
@@ -71,35 +72,28 @@ public class RunExitController : MonoBehaviour
 
     public void ConfirmFreshStart()
     {
-        if (exitConfirmPanel != null) exitConfirmPanel.HideAll();
         SetState(ExitFlowState.None);
         if (wheel != null) wheel.Restart();
     }
 
     public void ConfirmCollect()
     {
-        if (exitConfirmPanel != null) exitConfirmPanel.HideAll();
         SetState(ExitFlowState.None);
         if (collectAnimator != null) collectAnimator.PlayCollectAndLeave();
     }
 
     public void CancelExit()
     {
-        if (exitConfirmPanel != null) exitConfirmPanel.HideAll();
         SetState(ExitFlowState.None);
     }
 
     public void PressGiveUp()
     {
         SetState(ExitFlowState.GiveUpConfirm);
-        if (deathPanel != null)        deathPanel.SetCardVisible(false);
-        if (deathConfirmPanel != null) deathConfirmPanel.Show();
     }
 
     public void ConfirmLoseRewards()
     {
-        if (deathConfirmPanel != null) deathConfirmPanel.Hide();
-        if (deathPanel != null)        deathPanel.Hide();
         SetState(ExitFlowState.None);
         if (wheel != null) wheel.Restart();
     }
@@ -107,8 +101,6 @@ public class RunExitController : MonoBehaviour
     public void CancelGiveUp()
     {
         SetState(ExitFlowState.DeathSkull);
-        if (deathConfirmPanel != null) deathConfirmPanel.Hide();
-        if (deathPanel != null)        deathPanel.ShowDeathCard();
     }
 
     public bool PressRevive()
@@ -117,25 +109,33 @@ public class RunExitController : MonoBehaviour
         if (_reviveInFlight) return false;
         _reviveInFlight = true;
         if (!wheel.TryRevive()) { _reviveInFlight = false; return false; }
-        if (deathConfirmPanel != null) deathConfirmPanel.Hide();
-        if (deathPanel != null)        deathPanel.Hide();
         SetState(ExitFlowState.None);
         return true;
     }
 
     private void HandleDeathHit()
     {
-
         _reviveInFlight = false;
         SetState(ExitFlowState.DeathSkull);
-        if (deathConfirmPanel != null) deathConfirmPanel.Hide();
-        if (deathPanel != null)        deathPanel.ShowDeathCard();
     }
 
     private void SetState(ExitFlowState newState)
     {
         if (state == newState) return;
         state = newState;
+
+        bool isConfirmingExit = state == ExitFlowState.CollectConfirm
+                             || state == ExitFlowState.FreshStartConfirm;
+        bool isDeathFlow      = state == ExitFlowState.DeathSkull
+                             || state == ExitFlowState.GiveUpConfirm;
+        bool isUIOverlay      = isConfirmingExit || isDeathFlow;
+
+        if (zoneHUD != null)           zoneHUD.SetDimmed(isUIOverlay);
+        if (blurOverlay != null)       blurOverlay.SetVisible(isConfirmingExit);
+        if (exitConfirmPanel != null)  exitConfirmPanel.Apply(state);
+        if (deathPanel != null)        deathPanel.Apply(state);
+        if (deathConfirmPanel != null) deathConfirmPanel.Apply(state);
+
         OnStateChanged?.Invoke(state);
     }
 

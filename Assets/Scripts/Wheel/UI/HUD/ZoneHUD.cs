@@ -4,7 +4,6 @@ using UnityEngine.UI;
 public class ZoneHUD : MonoBehaviour
 {
     [SerializeField] private WheelController controller;
-    [SerializeField] private RunExitController exitController;
     [SerializeField] private CanvasGroup zoneGroup;
     [SerializeField] private Canvas zoneCanvas;
 
@@ -14,35 +13,13 @@ public class ZoneHUD : MonoBehaviour
 
     private SpinButtonAnimator.State _lastTarget;
     private bool _buttonStateInitialized;
-    private bool _zoneSubscribed;
 
     void Awake()
     {
-        if (controller     == null) { Debug.LogError("[ZoneHUD] controller not assigned",     this); enabled = false; return; }
-        if (exitController == null) { Debug.LogError("[ZoneHUD] exitController not assigned", this); enabled = false; return; }
-        if (spinButton     == null) { Debug.LogError("[ZoneHUD] spinButton not assigned",     this); enabled = false; return; }
+        if (controller == null) { Debug.LogError("[ZoneHUD] controller not assigned", this); enabled = false; return; }
+        if (spinButton == null) { Debug.LogError("[ZoneHUD] spinButton not assigned", this); enabled = false; return; }
 
         spinButton.onClick.AddListener(OnSpin);
-    }
-
-    void OnEnable()
-    {
-        if (exitController != null && !_zoneSubscribed)
-        {
-            exitController.OnStateChanged += HandleExitStateChanged;
-            _zoneSubscribed = true;
-
-            HandleExitStateChanged(exitController.State);
-        }
-    }
-
-    void OnDisable()
-    {
-        if (exitController != null && _zoneSubscribed)
-        {
-            exitController.OnStateChanged -= HandleExitStateChanged;
-            _zoneSubscribed = false;
-        }
     }
 
     void OnDestroy()
@@ -50,26 +27,21 @@ public class ZoneHUD : MonoBehaviour
         if (spinButton != null) spinButton.onClick.RemoveListener(OnSpin);
     }
 
-    void HandleExitStateChanged(ExitFlowState state)
+    public void SetDimmed(bool dimmed)
     {
-        bool overlayActive = state == ExitFlowState.DeathSkull
-                          || state == ExitFlowState.GiveUpConfirm
-                          || state == ExitFlowState.CollectConfirm
-                          || state == ExitFlowState.FreshStartConfirm;
-
         if (zoneGroup != null)
         {
-            zoneGroup.alpha = overlayActive
+            zoneGroup.alpha = dimmed
                 ? DeathOverlayStyle.ZoneBarOverlayAlpha
                 : DeathOverlayStyle.ZoneBarPromotedAlpha;
 
-            zoneGroup.blocksRaycasts = !overlayActive;
-            zoneGroup.interactable   = !overlayActive;
+            zoneGroup.blocksRaycasts = !dimmed;
+            zoneGroup.interactable   = !dimmed;
         }
 
         if (zoneCanvas != null)
         {
-            zoneCanvas.sortingOrder = overlayActive
+            zoneCanvas.sortingOrder = dimmed
                 ? UICanvasOrders.RewardListBelowOverlay
                 : UICanvasOrders.HUDPromoted;
         }

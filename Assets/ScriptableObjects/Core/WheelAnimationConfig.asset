@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier:
   spinFlyStartDelay: 0.08
   spinFlyDuration: 0.25
-  spinPostLandHold: 0.05
+  spinPostLandHold: 0
   collectPanelShowDuration: 0.25
   panelShowDuration: 0.22
   cardOutDuration: 0.10

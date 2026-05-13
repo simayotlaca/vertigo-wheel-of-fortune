@@ -6,14 +6,14 @@ public static class WheelSliceContentLayout
 {
     private static readonly Color32 AMOUNT_COLOR = new Color32(0xFF, 0xFF, 0xFF, 0xFF);
 
-    public static void Apply(SliceView sliceView, RewardDefinition reward)
+    public static void Apply(SliceView sliceView, RewardDefinition reward, WheelAnimationConfig cfg)
     {
         if (sliceView == null) return;
-        WheelSlotContentAreas.Areas A = WheelSlotContentAreas.Compute(WheelGeometry.SlotSize);
+        WheelSlotContentAreas.Areas A = WheelSlotContentAreas.Compute(WheelGeometry.SlotSize, cfg);
         IconVisualProfile profile = WheelIconVisualProfileResolver.Resolve(reward);
         ApplyUprightGroup(sliceView.UprightGroup);
-        ApplyIcon(sliceView.IconImage, profile, A);
-        ApplyAmount(sliceView.AmountText, profile, A);
+        ApplyIcon(sliceView.IconImage, profile, A, cfg);
+        ApplyAmount(sliceView.AmountText, profile, A, cfg);
     }
 
     public static RewardVisualCategory ResolveCategory(RewardDefinition reward)
@@ -34,14 +34,14 @@ public static class WheelSliceContentLayout
     }
 
     private static void ApplyIcon(Image icon, IconVisualProfile profile,
-                                  WheelSlotContentAreas.Areas A)
+                                  WheelSlotContentAreas.Areas A, WheelAnimationConfig cfg)
     {
         if (icon == null) return;
 
         icon.preserveAspect = true;
 
         WheelIconVisualProfileResolver.IconStyle s =
-            WheelIconVisualProfileResolver.Resolve(profile, WheelGeometry.SlotSize);
+            WheelIconVisualProfileResolver.Resolve(profile, WheelGeometry.SlotSize, cfg);
 
         RectTransform rt = icon.rectTransform;
         rt.anchorMin = new Vector2(0.5f, 0.5f);
@@ -53,11 +53,11 @@ public static class WheelSliceContentLayout
 
     private static void ApplyAmount(TMP_Text amount,
                                     IconVisualProfile profile,
-                                    WheelSlotContentAreas.Areas A)
+                                    WheelSlotContentAreas.Areas A, WheelAnimationConfig cfg)
     {
         if (amount == null) return;
 
-        WheelAmountTextStyle.Style s = WheelAmountTextStyle.Resolve(amount.text, WheelGeometry.SlotSize, A);
+        WheelAmountTextStyle.Style s = WheelAmountTextStyle.Resolve(amount.text, WheelGeometry.SlotSize, A, cfg);
 
         RectTransform rt = amount.rectTransform;
         rt.anchorMin = new Vector2(0.5f, 0.5f);

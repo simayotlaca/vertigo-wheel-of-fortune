@@ -1726,7 +1726,7 @@ MonoBehaviour:
   itemsContainer: {fileID: 1141780631}
   chip: {fileID: 341041296}
   activeSlotIndex: 6
-  slideDuration: 0.24
+  slideDuration: 0
   slideAmount: 68
 --- !u!223 &824981132
 Canvas:

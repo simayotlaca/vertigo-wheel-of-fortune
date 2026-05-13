@@ -5,9 +5,6 @@ using TMPro;
 
 public class SliceView : MonoBehaviour
 {
-    private const float amount_pop_start_scale = 0.7f;
-    private const float amount_pop_duration = 0.32f;
-
     [SerializeField] private WheelAnimationConfig animConfig;
     [SerializeField] private RectTransform pivot;
     [SerializeField] private RectTransform uprightGroup;
@@ -87,7 +84,7 @@ public class SliceView : MonoBehaviour
             PopAmountText();
         }
 
-        WheelSliceContentLayout.Apply(this, slice.reward);
+        WheelSliceContentLayout.Apply(this, slice.reward, animConfig);
         DimCacheBaseColorsIfNeeded();
         DimApply();
         if (amountText != null && amountText.rectTransform.localEulerAngles.z != 0f)
@@ -101,8 +98,8 @@ public class SliceView : MonoBehaviour
         if (amount_pop_tween.isAlive) amount_pop_tween.Stop();
 
         RectTransform rt = amountText.rectTransform;
-        rt.localScale = Vector3.one * amount_pop_start_scale;
-        amount_pop_tween = Tween.Scale(rt, Vector3.one, amount_pop_duration, Ease.OutBack);
+        rt.localScale = Vector3.one * animConfig.amountPopStartScale;
+        amount_pop_tween = Tween.Scale(rt, Vector3.one, animConfig.amountPopDuration, Ease.OutBack);
     }
 
     public void Highlight() => GlowTrigger();

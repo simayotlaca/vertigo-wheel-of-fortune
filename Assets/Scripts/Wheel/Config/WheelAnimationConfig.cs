@@ -1,5 +1,19 @@
 using UnityEngine;
 
+
+
+//scriptable objects: inspector gözünden gözüken tüm sliderların şablonu
+//her alan için tipine göre UI çiziyoruz
+//float + [Range(0.1f, 1f)] → slider
+//float + [Min(0f)] → sayı kutusu
+//Color → renk seçici
+//[Header(...)] → kalın başlık
+//[Tooltip(...)]→fareyle üzerine gelince balon yazı
+//inspector buradaki alanları görüp çizecek
+//[Range(0.1f, 1f)→"Inspector'da bunu slider olarak çiz, 0.1 ile 1 arası"
+
+// asıl ayarın kaydedildiği yer .assets kısmı. oraya taşıdım.
+
 [CreateAssetMenu(fileName = "WheelAnimationConfig", menuName = "Wheel/WheelAnimationConfig")]
 public class WheelAnimationConfig : ScriptableObject
 {
@@ -88,6 +102,44 @@ public class WheelAnimationConfig : ScriptableObject
     [Min(0f)] public float glowHoldSeconds = 0.45f;
     [Tooltip("Glow color (RGB used; alpha animated separately).")]
     public Color glowTint = new Color32(255, 200, 80, 255);
+
+    [Header("Wheel Slot — Content Layout (icon & amount placement)")]
+    [Tooltip("Icon merkez X — slot boyutunun oranı (0=ortada, -0.5=sol, 0.5=sağ).")]
+    [Range(-1f, 1f)] public float iconCenterXRatio = 0f;
+    [Tooltip("Icon merkez Y — slot boyutunun oranı (0=ortada, -0.5=aşağı, 0.5=yukarı).")]
+    [Range(-1f, 1f)] public float iconCenterYRatio = 0f;
+    [Tooltip("Icon alanı boyutu — slot boyutunun oranı (1.0 = slot kadar büyük).")]
+    [Min(0f)] public float iconAreaSizeRatio = 1.0f;
+
+    [Tooltip("Amount yazı merkez X — slot boyutunun oranı.")]
+    [Range(-1f, 1f)] public float amountCenterXRatio = 0f;
+    [Tooltip("Amount yazı merkez Y — slot boyutunun oranı (-0.28 = altta).")]
+    [Range(-1f, 1f)] public float amountCenterYRatio = -0.28f;
+    [Tooltip("Amount yazı alanı genişliği — slot boyutunun oranı.")]
+    [Min(0f)] public float amountAreaWidthRatio = 1.0f;
+    [Tooltip("Amount yazı alanı yüksekliği — slot boyutunun oranı.")]
+    [Min(0f)] public float amountAreaHeightRatio = 0.22f;
+
+    [Header("Wheel Slot — Global Icon Scale")]
+    [Tooltip("Tüm dilim icon'larının global boyut çarpanı (kategori-bağımsız).")]
+    [Range(0.1f, 2f)] public float globalIconScale = 0.94f;
+
+    [Header("Wheel Slot — Amount Text Width by Length")]
+    [Tooltip("Kısa yazı için genişlik (örn. x2, +5).")]
+    [Range(0f, 2f)] public float amountShortWidthRatio = 0.55f;
+    [Tooltip("Orta uzunluk yazı için genişlik.")]
+    [Range(0f, 2f)] public float amountMediumWidthRatio = 0.78f;
+    [Tooltip("Kompakt yazı için genişlik (örn. 5K, 30K).")]
+    [Range(0f, 2f)] public float amountCompactWidthRatio = 0.95f;
+    [Tooltip("Uzun yazı için genişlik (örn. 1.5M).")]
+    [Range(0f, 2f)] public float amountLongWidthRatio = 1.00f;
+
+    //inspectordaki spin,reval gibigibi başlukların kaynağı burası
+    [Header("Slice — Amount Text Pop (on slice draw)")]
+    [Tooltip("Başlangıç ölçeği — yazı bu boyuttan 1.0'a OutBack ile büyür.")]
+    [Range(0.1f, 1f)] public float amountPopStartScale = 0.7f;
+    [Tooltip("Pop tween süresi (saniye).")]
+    [Min(0f)] public float amountPopDuration = 0.32f;
 
     [Header("Hint Pulse (idle SPIN button nudge)")]
     [Tooltip("Peak scale of the hint pulse relative to original scale.")]

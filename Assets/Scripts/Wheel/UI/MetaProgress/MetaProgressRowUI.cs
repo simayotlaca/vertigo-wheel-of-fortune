@@ -8,7 +8,78 @@ using UnityEngine.UI;
 public class MetaProgressRowUI : MonoBehaviour
 {
     private const byte glow_alpha = 70;
-    private const float shake_speed = 60f;
+
+    [Header("Shake Animation")]
+    [Tooltip("Unlock anında satırın sallanma hızı (yüksek = hızlı titreşim).")]
+    [Min(0f)]
+    [SerializeField] private float shakeSpeed = 60f;
+    [Tooltip("Sallanma genliği (px).")]
+    [Min(0f)]
+    [SerializeField] private float shakeMagnitude = 4f;
+    [Tooltip("Sallanma toplam süresi (saniye).")]
+    [Min(0f)]
+    [SerializeField] private float shakeDuration = 0.12f;
+
+    [Header("Unlock — Flash Overlay")]
+    [Tooltip("Flash overlay'in tepe alpha değeri (parlama yoğunluğu).")]
+    [Range(0f, 1f)]
+    [SerializeField] private float flashAlphaPeak = 0.85f;
+    [Tooltip("Flash fade-in süresi (siyahtan parlamaya).")]
+    [Min(0f)]
+    [SerializeField] private float flashFadeInDuration = 0.06f;
+    [Tooltip("Flash fade-out süresi (parlamadan siyaha).")]
+    [Min(0f)]
+    [SerializeField] private float flashFadeOutDuration = 0.14f;
+
+    [Header("Unlock — Icon Punch")]
+    [Tooltip("Icon zıplama büyüklüğü (0.18 = %18 büyür).")]
+    [Range(0f, 1f)]
+    [SerializeField] private float iconPunchScale = 0.18f;
+    [Tooltip("Icon zıplama süresi.")]
+    [Min(0f)]
+    [SerializeField] private float iconPunchDuration = 0.22f;
+    [Tooltip("Icon zıplamadan önce bekleme.")]
+    [Min(0f)]
+    [SerializeField] private float iconPunchDelay = 0.06f;
+    [Tooltip("Border fade-in süresi (icon ile birlikte).")]
+    [Min(0f)]
+    [SerializeField] private float borderFadeInDuration = 0.15f;
+
+    [Header("Unlock — Badge")]
+    [Tooltip("Badge'in icon punch'tan sonra ne kadar bekleyip gelmesi.")]
+    [Min(0f)]
+    [SerializeField] private float badgeDelay = 0.14f;
+    [Tooltip("Badge yazısı fade-in süresi.")]
+    [Min(0f)]
+    [SerializeField] private float badgeFadeInDuration = 0.12f;
+    [Tooltip("Badge zıplama büyüklüğü.")]
+    [Range(0f, 1f)]
+    [SerializeField] private float badgePunchScale = 0.25f;
+    [Tooltip("Badge zıplama süresi.")]
+    [Min(0f)]
+    [SerializeField] private float badgePunchDuration = 0.20f;
+
+    [Header("Unlock — Pre-Exit Delay & Fly-out")]
+    [Tooltip("Shake'ten önce bekleme.")]
+    [Min(0f)]
+    [SerializeField] private float preShakeDelay = 0.16f;
+    [Tooltip("Shake bittikten sonra fly-out'tan önce bekleme.")]
+    [Min(0f)]
+    [SerializeField] private float preFlyOutDelay = 0.97f;
+    [Tooltip("Fly-out shrink süresi (satır 0'a düşene kadar).")]
+    [Min(0f)]
+    [SerializeField] private float flyOutDuration = 0.35f;
+    [Tooltip("Fly-out sonrası temizliğe bekleme.")]
+    [Min(0f)]
+    [SerializeField] private float postFlyOutDelay = 0.35f;
+
+    [Header("Pulse (on AnimateTo points change)")]
+    [Tooltip("Pulse büyüklüğü (1.05 = %5 büyür).")]
+    [Min(1f)]
+    [SerializeField] private float pulseScale = 1.05f;
+    [Tooltip("Pulse süresi (geri 1.0'a OutBack ile döner).")]
+    [Min(0f)]
+    [SerializeField] private float pulseDuration = 0.30f;
 
     [SerializeField] private Image weaponIcon;
     [SerializeField] private TMP_Text nameLabel;
@@ -163,45 +234,45 @@ public class MetaProgressRowUI : MonoBehaviour
         if (flashOverlay != null)
         {
             Sequence.Create()
-                .Chain(Tween.Alpha(flashOverlay, 0f, 0.85f, 0.06f))
-                .Chain(Tween.Alpha(flashOverlay, 0.85f, 0f, 0.14f));
+                .Chain(Tween.Alpha(flashOverlay, 0f, flashAlphaPeak, flashFadeInDuration))
+                .Chain(Tween.Alpha(flashOverlay, flashAlphaPeak, 0f, flashFadeOutDuration));
         }
 
         Sequence.Create()
-            .ChainDelay(0.06f)
+            .ChainDelay(iconPunchDelay)
             .ChainCallback(() =>
             {
                 if (weaponIcon != null)
-                    Tween.PunchScale(weaponIcon.rectTransform, new Vector3(0.18f, 0.18f, 0f), 0.22f);
+                    Tween.PunchScale(weaponIcon.rectTransform, new Vector3(iconPunchScale, iconPunchScale, 0f), iconPunchDuration);
                 if (border != null)
-                    Tween.Alpha(border, 0f, 1f, 0.15f);
+                    Tween.Alpha(border, 0f, 1f, borderFadeInDuration);
             })
-            .ChainDelay(0.14f)
+            .ChainDelay(badgeDelay)
             .ChainCallback(() =>
             {
                 if (unlockedBadge != null)
                 {
                     unlockedBadge.SetActive(true);
                     if (unlockedBadgeLabel is Graphic g)
-                        Tween.Alpha(g, 0f, 1f, 0.12f);
+                        Tween.Alpha(g, 0f, 1f, badgeFadeInDuration);
                     var badgeRT = unlockedBadge.GetComponent<RectTransform>();
                     if (badgeRT != null)
-                        Tween.PunchScale(badgeRT, new Vector3(0.25f, 0.25f, 0f), 0.20f);
+                        Tween.PunchScale(badgeRT, new Vector3(badgePunchScale, badgePunchScale, 0f), badgePunchDuration);
                 }
             })
-            .ChainDelay(0.16f)
+            .ChainDelay(preShakeDelay)
             .ChainCallback(() =>
             {
-                if (rowRoot != null) StartCoroutine(ShakeAnchored(rowRoot, 4f, 0.12f));
+                if (rowRoot != null) StartCoroutine(ShakeAnchored(rowRoot, shakeMagnitude, shakeDuration, shakeSpeed));
             })
-            .ChainDelay(0.97f)
+            .ChainDelay(preFlyOutDelay)
             .ChainCallback(() =>
             {
                 DebugLogger.Log($"[MetaProgressPanel] FLY_OUT rewardId={logId}");
                 if (rowRoot != null)
-                    Tween.Scale(rowRoot, Vector3.zero, 0.35f, Ease.InQuad);
+                    Tween.Scale(rowRoot, Vector3.zero, flyOutDuration, Ease.InQuad);
             })
-            .ChainDelay(0.35f)
+            .ChainDelay(postFlyOutDelay)
             .ChainCallback(() =>
             {
                 if (rowRoot != null)
@@ -216,7 +287,7 @@ public class MetaProgressRowUI : MonoBehaviour
             });
     }
 
-    private static IEnumerator ShakeAnchored(RectTransform rt, float magnitude, float dur)
+    private static IEnumerator ShakeAnchored(RectTransform rt, float magnitude, float dur, float speed)
     {
         if (rt == null || dur <= 0f) yield break;
         Vector2 origin = rt.anchoredPosition;
@@ -225,7 +296,7 @@ public class MetaProgressRowUI : MonoBehaviour
         {
             t += Time.deltaTime;
             float k = 1f - Mathf.Clamp01(t / dur);
-            float dx = Mathf.Sin(t * shake_speed) * magnitude * k;
+            float dx = Mathf.Sin(t * speed) * magnitude * k;
             rt.anchoredPosition = origin + new Vector2(dx, 0f);
             yield return null;
         }
@@ -236,7 +307,7 @@ public class MetaProgressRowUI : MonoBehaviour
     {
         if (rowRoot == null) return;
         if (pulse_tween.isAlive) pulse_tween.Stop();
-        rowRoot.localScale = Vector3.one * 1.05f;
-        pulse_tween = Tween.Scale(rowRoot, Vector3.one, 0.30f, Ease.OutBack);
+        rowRoot.localScale = Vector3.one * pulseScale;
+        pulse_tween = Tween.Scale(rowRoot, Vector3.one, pulseDuration, Ease.OutBack);
     }
 }

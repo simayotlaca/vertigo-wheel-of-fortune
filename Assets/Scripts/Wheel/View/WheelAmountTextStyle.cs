@@ -23,11 +23,6 @@ public static class WheelAmountTextStyle
         public TextAlignmentOptions Alignment;
     }
 
-    private const float ShortWidthRatio   = 0.55f;
-    private const float MediumWidthRatio  = 0.78f;
-    private const float CompactWidthRatio = 0.95f;
-    private const float LongWidthRatio    = 1.00f;
-
     public static Profile Classify(string formatted)
     {
         if (string.IsNullOrEmpty(formatted)) return Profile.Hidden;
@@ -46,7 +41,7 @@ public static class WheelAmountTextStyle
         return Profile.Medium;
     }
 
-    public static Style Resolve(string formatted, float slotSize, Areas areas)
+    public static Style Resolve(string formatted, float slotSize, Areas areas, WheelAnimationConfig cfg)
     {
         Profile p = Classify(formatted);
         Style s;
@@ -58,7 +53,7 @@ public static class WheelAmountTextStyle
         switch (p)
         {
             case Profile.Hidden:
-                s.SizeDelta = new Vector2(areas.AmountSize.x * ShortWidthRatio, boxH);
+                s.SizeDelta = new Vector2(areas.AmountSize.x * cfg.amountShortWidthRatio, boxH);
                 s.FontSizeMin = slotSize * 0.10f;
                 s.FontSizeMax = slotSize * 0.18f;
                 s.EnableAutoSizing = false;
@@ -66,21 +61,21 @@ public static class WheelAmountTextStyle
 
             case Profile.Short:
 
-                s.SizeDelta = new Vector2(areas.AmountSize.x * ShortWidthRatio, boxH);
+                s.SizeDelta = new Vector2(areas.AmountSize.x * cfg.amountShortWidthRatio, boxH);
                 s.FontSizeMin = slotSize * 0.20f;
                 s.FontSizeMax = slotSize * 0.20f;
                 s.EnableAutoSizing = false;
                 break;
 
             case Profile.Medium:
-                s.SizeDelta = new Vector2(areas.AmountSize.x * MediumWidthRatio, boxH);
+                s.SizeDelta = new Vector2(areas.AmountSize.x * cfg.amountMediumWidthRatio, boxH);
                 s.FontSizeMin = slotSize * 0.16f;
                 s.FontSizeMax = slotSize * 0.18f;
                 s.EnableAutoSizing = true;
                 break;
 
             case Profile.Compact:
-                s.SizeDelta = new Vector2(areas.AmountSize.x * CompactWidthRatio, boxH);
+                s.SizeDelta = new Vector2(areas.AmountSize.x * cfg.amountCompactWidthRatio, boxH);
                 s.FontSizeMin = slotSize * 0.13f;
                 s.FontSizeMax = slotSize * 0.16f;
                 s.EnableAutoSizing = true;
@@ -88,7 +83,7 @@ public static class WheelAmountTextStyle
 
             case Profile.Long:
             default:
-                s.SizeDelta = new Vector2(areas.AmountSize.x * LongWidthRatio, boxH);
+                s.SizeDelta = new Vector2(areas.AmountSize.x * cfg.amountLongWidthRatio, boxH);
                 s.FontSizeMin = slotSize * 0.12f;
                 s.FontSizeMax = slotSize * 0.15f;
                 s.EnableAutoSizing = true;

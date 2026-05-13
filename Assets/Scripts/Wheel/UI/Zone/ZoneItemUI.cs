@@ -4,9 +4,16 @@ using TMPro;
 
 public class ZoneItemUI : MonoBehaviour
 {
-    private const float PastAlphaBase = 0.75f;
-    private const float PastAlphaStep = 0.18f;
-    private const float PastAlphaMin = 0.18f;
+    [Header("Past Zone Alpha Fade")]
+    [Tooltip("Bir önceki zone'un alpha değeri (en yakın geçmiş).")]
+    [Range(0f, 1f)]
+    [SerializeField] private float pastAlphaBase = 0.75f;
+    [Tooltip("Her geçmiş zone başına ne kadar daha solsun (kümülatif).")]
+    [Range(0f, 1f)]
+    [SerializeField] private float pastAlphaStep = 0.18f;
+    [Tooltip("En soluk halinde bile alpha bunun altına inmez.")]
+    [Range(0f, 1f)]
+    [SerializeField] private float pastAlphaMin = 0.18f;
 
     [Header("Wired by ZoneBarBuilder")]
     [SerializeField] private TMP_Text normalNumber_value;
@@ -95,9 +102,9 @@ public class ZoneItemUI : MonoBehaviour
             }
             baseColor.a = colorPast.a;
             baseColor.a *= Mathf.Clamp(
-                PastAlphaBase - (_pastDistance - 1) * PastAlphaStep,
-                PastAlphaMin,
-                PastAlphaBase);
+                pastAlphaBase - (_pastDistance - 1) * pastAlphaStep,
+                pastAlphaMin,
+                pastAlphaBase);
             return baseColor;
         }
         switch (_tier)

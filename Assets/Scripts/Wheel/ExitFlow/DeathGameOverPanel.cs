@@ -136,7 +136,23 @@ public class DeathGameOverPanel : MonoBehaviour
         }
     }
 
-    public void ShowDeathCard()
+    public void Apply(ExitFlowState state)
+    {
+        switch (state)
+        {
+            case ExitFlowState.DeathSkull:
+                ShowDeathCardUI();
+                break;
+            case ExitFlowState.GiveUpConfirm:
+                SetCardVisibleUI(false);
+                break;
+            case ExitFlowState.None:
+                HideUI();
+                break;
+        }
+    }
+
+    private void ShowDeathCardUI()
     {
         if (panelRoot == null) return;
 
@@ -186,13 +202,13 @@ public class DeathGameOverPanel : MonoBehaviour
         scale_tween = Tween.Scale(panelRoot, Vector3.one, animConfig.panelShowDuration, Ease.OutBack);
     }
 
-    public void SetCardVisible(bool visible)
+    private void SetCardVisibleUI(bool visible)
     {
         if (cardRoot != null) cardRoot.gameObject.SetActive(visible);
         if (deathEdgeGlow != null) deathEdgeGlow.SetActive(visible);
     }
 
-    public void Hide()
+    private void HideUI()
     {
         ApplyHidden();
     }

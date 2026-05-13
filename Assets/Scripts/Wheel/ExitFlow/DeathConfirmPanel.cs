@@ -25,7 +25,13 @@ public class DeathConfirmPanel : MonoBehaviour
         if (goBackButton != null) goBackButton.onClick.RemoveListener(OnGoBackClicked);
     }
 
-    public void Show()
+    public void Apply(ExitFlowState state)
+    {
+        if (state == ExitFlowState.GiveUpConfirm) ShowUI();
+        else HideUI();
+    }
+
+    private void ShowUI()
     {
         if (loseRewardsButton != null) loseRewardsButton.interactable = true;
         if (goBackButton != null) goBackButton.interactable = true;
@@ -33,7 +39,7 @@ public class DeathConfirmPanel : MonoBehaviour
         gameObject.SetActive(true);
     }
 
-    public void Hide()
+    private void HideUI()
     {
         if (sharedBackdrop != null) sharedBackdrop.color = DeathOverlayStyle.MainBackdropDim;
         gameObject.SetActive(false);

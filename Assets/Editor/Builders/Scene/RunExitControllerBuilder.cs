@@ -32,17 +32,19 @@ internal static class RunExitControllerBuilder
         GameObject exitBtnGO = UILayoutBuilder.FindFirstInScene("ui_panel_reward_list_exit_header");
         Button exitBtn = exitBtnGO != null ? exitBtnGO.GetComponent<Button>() : null;
 
+        ZoneHUD zoneHUD = UILayoutBuilder.FirstSceneInstance(Resources.FindObjectsOfTypeAll<ZoneHUD>());
+        BlurBackgroundOverlay blur = UILayoutBuilder.FirstSceneInstance(Resources.FindObjectsOfTypeAll<BlurBackgroundOverlay>());
+
         UILayoutBuilder.Wire(controller, "wheel", wheel);
         UILayoutBuilder.Wire(controller, "exitConfirmPanel", exitPanel);
         UILayoutBuilder.Wire(controller, "deathPanel", deathPanel);
         UILayoutBuilder.Wire(controller, "deathConfirmPanel", deathConfirmPanel);
         UILayoutBuilder.Wire(controller, "collectAnimator", anim);
         UILayoutBuilder.Wire(controller, "exitButton", exitBtn);
+        UILayoutBuilder.Wire(controller, "zoneHUD", zoneHUD);
+        UILayoutBuilder.Wire(controller, "blurOverlay", blur);
 
-        ZoneHUD zoneHUD = UILayoutBuilder.FirstSceneInstance(Resources.FindObjectsOfTypeAll<ZoneHUD>());
-        BlurBackgroundOverlay blur = UILayoutBuilder.FirstSceneInstance(Resources.FindObjectsOfTypeAll<BlurBackgroundOverlay>());
-
-        MonoBehaviour[] panelsNeedingController = { exitPanel, deathPanel, deathConfirmPanel, zoneHUD, blur };
+        MonoBehaviour[] panelsNeedingController = { exitPanel, deathPanel, deathConfirmPanel };
         for (int i = 0; i < panelsNeedingController.Length; i++)
         {
             MonoBehaviour panel = panelsNeedingController[i];
@@ -54,10 +56,10 @@ internal static class RunExitControllerBuilder
             if (panelsNeedingController[i] != null) wiredBack++;
 
         Debug.Log(string.Format(
-            "[RunExitControllerBuilder] wheel={0} exitPanel={1} deathPanel={2} deathConfirm={3} anim={4} exitBtn={5}",
-            wheel != null, exitPanel != null, deathPanel != null, deathConfirmPanel != null, anim != null, exitBtn != null));
+            "[RunExitControllerBuilder] wheel={0} exitPanel={1} deathPanel={2} deathConfirm={3} anim={4} exitBtn={5} zoneHUD={6} blur={7}",
+            wheel != null, exitPanel != null, deathPanel != null, deathConfirmPanel != null, anim != null, exitBtn != null, zoneHUD != null, blur != null));
         Debug.Log(string.Format(
-            "[RunExitControllerBuilder] back-pointers wired: {0}/{1} (exitPanel, deathPanel, deathConfirm, zoneHUD, blur)",
+            "[RunExitControllerBuilder] back-pointers wired: {0}/{1} (exitPanel, deathPanel, deathConfirm)",
             wiredBack, panelsNeedingController.Length));
     }
 }

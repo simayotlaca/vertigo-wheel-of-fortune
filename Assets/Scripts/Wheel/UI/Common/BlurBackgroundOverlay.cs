@@ -2,24 +2,14 @@ using UnityEngine;
 
 public class BlurBackgroundOverlay : MonoBehaviour
 {
-    [SerializeField] private RunExitController exitController;
     [SerializeField] private CanvasGroup blurGroup;
     [SerializeField] private float fadeDuration = 0.2f;
 
     private float target_alpha;
-    private bool subscribed;
 
     void OnEnable()
     {
-        Subscribe();
-
-        if (exitController != null) Apply(exitController.State);
-        else Apply(ExitFlowState.None);
-    }
-
-    void OnDisable()
-    {
-        Unsubscribe();
+        SetVisible(false);
     }
 
     void Update()
@@ -40,26 +30,9 @@ public class BlurBackgroundOverlay : MonoBehaviour
         blurGroup.interactable = visible;
     }
 
-    void Subscribe()
+    public void SetVisible(bool visible)
     {
-        if (subscribed || exitController == null) return;
-        exitController.OnStateChanged += Apply;
-        subscribed = true;
-    }
-
-    void Unsubscribe()
-    {
-        if (!subscribed || exitController == null) return;
-        exitController.OnStateChanged -= Apply;
-        subscribed = false;
-    }
-
-    void Apply(ExitFlowState state)
-    {
-        bool show = state == ExitFlowState.CollectConfirm
-                 || state == ExitFlowState.FreshStartConfirm;
-        target_alpha = show ? 1f : 0f;
+        target_alpha = visible ? 1f : 0f;
         enabled = true;
     }
-
 }

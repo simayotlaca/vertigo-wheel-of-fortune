@@ -43,21 +43,37 @@ public class ExitConfirmPanel : MonoBehaviour
         SetHudDemoted(false);
     }
 
-    public void ShowFreshStart()
+    public void Apply(ExitFlowState state)
+    {
+        switch (state)
+        {
+            case ExitFlowState.FreshStartConfirm:
+                ShowFreshStartUI();
+                break;
+            case ExitFlowState.CollectConfirm:
+                ShowSafeExitUI();
+                break;
+            default:
+                HideAllUI();
+                break;
+        }
+    }
+
+    private void ShowFreshStartUI()
     {
         if (freshStartRoot != null) freshStartRoot.SetActive(true);
         if (safeExitRoot   != null) safeExitRoot.SetActive(false);
         SetHudDemoted(true);
     }
 
-    public void ShowSafeExit()
+    private void ShowSafeExitUI()
     {
         if (freshStartRoot != null) freshStartRoot.SetActive(false);
         if (safeExitRoot   != null) safeExitRoot.SetActive(true);
         SetHudDemoted(true);
     }
 
-    public void HideAll()
+    private void HideAllUI()
     {
         if (freshStartRoot != null) freshStartRoot.SetActive(false);
         if (safeExitRoot   != null) safeExitRoot.SetActive(false);

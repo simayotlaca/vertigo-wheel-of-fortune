@@ -46,8 +46,9 @@ public static class WheelIconVisualProfileResolver
         }
     }
 
-    public static IconStyle Resolve(IconVisualProfile profile, float slotSize)
+    public static IconStyle Resolve(IconVisualProfile profile, float slotSize, WheelAnimationConfig cfg)
     {
+        float globalScale = cfg.globalIconScale;
         IconStyle s;
         s.AnchoredOffset = Vector2.zero;
 
@@ -55,64 +56,62 @@ public static class WheelIconVisualProfileResolver
         {
             case IconVisualProfile.Currency:
 
-                s.SizeDelta = Square(slotSize, 0.70f);
+                s.SizeDelta = Square(slotSize, globalScale,0.70f);
                 s.AnchoredOffset = new Vector2(0f, slotSize * -0.04f);
                 break;
 
             case IconVisualProfile.Chest:
-                s.SizeDelta = Square(slotSize, 0.68f);
+                s.SizeDelta = Square(slotSize, globalScale,0.68f);
 
                 s.AnchoredOffset = new Vector2(0f, slotSize * -0.02f);
                 break;
 
             case IconVisualProfile.Consumable:
-                s.SizeDelta = Square(slotSize, 0.62f);
+                s.SizeDelta = Square(slotSize, globalScale,0.62f);
                 break;
 
             case IconVisualProfile.Throwable:
 
-                s.SizeDelta = Square(slotSize, 0.60f);
+                s.SizeDelta = Square(slotSize, globalScale,0.60f);
                 s.AnchoredOffset = new Vector2(slotSize * -0.08f, slotSize * -0.04f);
                 break;
 
             case IconVisualProfile.WeaponLong:
 
-                s.SizeDelta = Square(slotSize, 0.71f);
+                s.SizeDelta = Square(slotSize, globalScale,0.71f);
                 break;
 
             case IconVisualProfile.WeaponCompact:
-                s.SizeDelta = Square(slotSize, 0.62f);
+                s.SizeDelta = Square(slotSize, globalScale,0.62f);
                 break;
 
             case IconVisualProfile.MeleeLong:
-                s.SizeDelta = Square(slotSize, 0.72f);
+                s.SizeDelta = Square(slotSize, globalScale,0.72f);
                 break;
 
             case IconVisualProfile.Cosmetic:
-                s.SizeDelta = Square(slotSize, 0.65f);
+                s.SizeDelta = Square(slotSize, globalScale,0.65f);
                 break;
 
             case IconVisualProfile.Death:
 
-                s.SizeDelta = Square(slotSize, 0.78f);
+                s.SizeDelta = Square(slotSize, globalScale,0.78f);
                 s.AnchoredOffset = new Vector2(0f, slotSize * -0.10f);
                 break;
 
             case IconVisualProfile.Character:
-                s.SizeDelta = Square(slotSize, 0.70f);
+                s.SizeDelta = Square(slotSize, globalScale,0.70f);
                 break;
 
             case IconVisualProfile.Compact:
             case IconVisualProfile.Auto:
             default:
-                s.SizeDelta = Square(slotSize, 0.62f);
+                s.SizeDelta = Square(slotSize, globalScale,0.62f);
                 break;
         }
         return s;
     }
 
-    private const float GlobalIconScale = 0.94f;
-
-    private static Vector2 Square(float slotSize, float ratio) =>
-        new Vector2(slotSize * ratio * GlobalIconScale, slotSize * ratio * GlobalIconScale);
+    private static Vector2 Square(float slotSize, float globalScale, float ratio) =>
+        new Vector2(slotSize * ratio * globalScale, slotSize * ratio * globalScale);
 }
