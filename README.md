@@ -60,16 +60,21 @@ The bits I'm a little proud of:
 ### Spin state machine
 
 ```mermaid
-stateDiagram-v2
-    [*] --> Ready
-    Ready --> Turning: SPIN pressed
-    Turning --> Landing: tween done
-    Landing --> Reward: not a bomb
-    Landing --> Death: bomb 💣
+---
+config:
+  look: handDrawn
+  theme: neutral
+---
+flowchart TD
+    Start(( )) --> Ready
+    Ready -->|SPIN pressed| Turning
+    Turning -->|tween done| Landing
+    Landing -->|not a bomb| Reward
+    Landing -->|bomb 💣| Death
     Reward --> Ready
-    Death --> PostReviveReady: revive (pay gold)
-    Death --> [*]: give up
-    PostReviveReady --> Ready: one bomb-free spin granted
+    Death -->|revive · pay gold| PostReviveReady
+    Death -->|give up| End((( )))
+    PostReviveReady -->|one bomb-free spin granted| Ready
 ```
 
 States live in `Assets/Scripts/Wheel/Controller/` — `ReadyState`, `TurningState`, `LandingState`, `RewardState`, `DeathState`, `PostReviveReadyState`. They all derive from `WheelStateBase`. States never call each other directly; only `WheelController` performs transitions.
@@ -143,7 +148,6 @@ Assets/
 - 📦 Sprite Atlas split into **6 categories** (Icon, Spin, Button, Panel, Frame, VFX)
 - 💌 **TextMeshPro** on every label
 - 📐 Canvas Scaler `ScaleWithScreenSize`, reference **1920×1080**, *Expand* mode
-- 📲 **20:9 / 16:9 / 4:3** aspect ratios handled via Canvas Scaler Expand + center anchoring
 
 ---
 
