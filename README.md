@@ -59,27 +59,53 @@ The bits I'm a little proud of:
 
 ## ⚔️ Architecture
 
-### Spin state machine
+### System overview
 
-```mermaid
----
-config:
-  look: handDrawn
-  theme: neutral
----
-flowchart TD
-    Start(( )) --> Ready
-    Ready -->|SPIN pressed| Turning
-    Turning -->|tween done| Landing
-    Landing -->|not a bomb| Reward
-    Landing -->|bomb 💣| Death
-    Reward --> Ready
-    Death -->|revive · pay gold| PostReviveReady
-    Death -->|give up| End((( )))
-    PostReviveReady -->|one bomb-free spin granted| Ready
+```text
+┌──────────────────────────────────────────────────────────┐
+│  WheelLogic   (pure C#, no MonoBehaviour)                │
+│  Spin(zone) → SpinResult                                 │
+└────────────────────────┬─────────────────────────────────┘
+                         │  called by
+                         ▼
+┌──────────────────────────────────────────────────────────┐
+│  WheelController   (event bridge: logic ↔ UI)            │
+└────────────────────────┬─────────────────────────────────┘
+                         │  emits
+     ┌───────────────────┼───────────────────┐
+     ▼                   ▼                   ▼
+ OnZoneChanged     OnRewardEarned       OnDeathHit
+ OnRewardsBanked   OnRevived            OnRunEnded
+     │                   │                   │
+     └───────────────────┼───────────────────┘
+                         │  subscribed by
+                         ▼
+┌──────────────────────────────────────────────────────────┐
+│  Presentation Layer                                      │
+│    ├─ UI Panels                                          │
+│    │     HUD · popups · reward list · MetaProgress       │
+│    ├─ ExitFlow / DeathFlow                               │
+│    │     RunExitController · revive · bank rewards       │
+│    └─ MetaProgressionService                             │
+│          per-run weapon points                           │
+└──────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────┐
+│  Persistence                                             │
+│    PlayerProgress  →  PlayerPrefs                        │
+│      ├─ writes  · bank · revive · app pause · quit       │
+│      └─ reads   · Start                                  │
+└──────────────────────────────────────────────────────────┘
+
+┌──────────────────────────────────────────────────────────┐
+│  Rebuild Pipeline                                        │
+│    Vertigo → Build → Full Rebuild                        │
+│      ├─ WheelDistributionApplier.Apply()                 │
+│      └─ WheelSceneSetup.Build()                          │
+└──────────────────────────────────────────────────────────┘
 ```
 
-States live in `Assets/Scripts/Wheel/Controller/`: `ReadyState`, `TurningState`, `LandingState`, `RewardState`, `DeathState`, `PostReviveReadyState`. They all derive from `WheelStateBase`. States never call each other directly; only `WheelController` performs transitions.
+Spin states live in `Assets/Scripts/Wheel/Controller/`: `ReadyState`, `TurningState`, `LandingState`, `RewardState`, `DeathState`, `PostReviveReadyState`. They all derive from `WheelStateBase`. States never call each other directly; only `WheelController` performs transitions.
 
 ### What happens when you press SPIN 🎡
 
@@ -209,12 +235,6 @@ All screenshots live under `Docs/Screenshots/`.
 
 ---
 
-## 💌 Credits
-
-- **Developer:** Simay 🎀
-
----
-
 ## 🚀 Build / Release
 
 ### 🪖 Android APK
@@ -228,7 +248,3 @@ The APK is shared via a GitHub Release rather than committed to the repo.
 
 ### 📲 APK Download
 [**Download APK ✨**](https://drive.google.com/file/d/1VxuD5v-L_xG7tuDoB4XAF-BY3kkhfsjW/view?usp=sharing)
-
----
-
-<p align="center">made with 🎀 and a lot of spin retries 💣</p>
