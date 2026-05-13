@@ -179,17 +179,25 @@ Assets/
 
 ---
 
-## 🌷 Unity / UI Brief Checklist
+## ⚡ Performance Notes
 
-- ✅ Canvas Scaler `ScaleWithScreenSize`, reference 1920×1080, Expand mode
-- ✅ 20:9 / 16:9 / 4:3 aspect ratios via Canvas Scaler Expand + center anchoring
-- ✅ TextMeshPro on all labels. Changeable labels use the `*_value` suffix (e.g. `reviveCost_value`)
-- ✅ UI hierarchy follows `ui_image_*` / `ui_button_*` naming (general → specific)
-- ✅ Decorative graphics have `raycastTarget` and `maskable` off. An editor pass enforces this across the scene
-- ✅ ScriptableObjects under `Assets/Configs/` store all wheel, zone and reward content
-- ✅ PrimeTween used for UI tweens
-- ✅ Sprite Atlas split into 6 categories
-- ✅ Whole UI can be rebuilt from `Vertigo → Build → Full Rebuild`
+The hot path is the spin loop. Every choice below is there to keep it allocation-free, draw-call-light, and free of mid-spin frame spikes.
+
+**Allocation discipline**
+- `WheelLogic` runs as pure C# with no `MonoBehaviour`, no `transform` access, no `Resources.Load`. The spin pipeline returns a `SpinResult` value type. No reflection at runtime.
+- ScriptableObjects under `Assets/Configs/` hold all wheel, zone and reward content. Data is referenced, not parsed, at runtime. No JSON, no `Resources.Load`, no PlayerPrefs reads inside the spin loop.
+- Reward icons and reward list rows pooled through `ObjectPool`. Zero `Instantiate` or `Destroy` during a run.
+- PrimeTween for every UI tween. Struct based, no per tween heap allocations, no coroutine churn.
+
+**Render cost**
+- Sprite Atlas split into 6 buckets (Icon, Spin, Button, Panel, Frame, VFX) so the wheel, side panels and HUD batch within a single draw call group each.
+- Decorative graphics ship with `raycastTarget` and `maskable` off. An editor audit enforces this across the scene so `GraphicRaycaster` only walks interactive nodes.
+- Single Canvas Scaler (`ScaleWithScreenSize`, 1920×1080, Expand). One layout serves 20:9, 16:9 and 4:3 without per aspect prefab forks. Canvas rebuilds are avoided by isolating dynamic widgets (reward inventory, spin button) from static frames.
+- TextMeshPro on every label. Mutable labels carry the `*_value` suffix so static text never calls `SetText` after layout.
+
+**Build path**
+- Single scene (`SampleScene.unity`). No async loads, no additive scenes.
+- `Vertigo → Build → Full Rebuild` reconstructs the UI from configs at edit time. Nothing rebuilds itself at runtime.
 
 ---
 
