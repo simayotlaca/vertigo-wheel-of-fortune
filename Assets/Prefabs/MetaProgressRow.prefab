@@ -612,6 +612,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56468a552be834d4e9b92f9ff22ac8e2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shakeSpeed: 60
+  shakeMagnitude: 4
+  shakeDuration: 0.12
+  flashAlphaPeak: 0.85
+  flashFadeInDuration: 0.06
+  flashFadeOutDuration: 0.14
+  iconPunchScale: 0.18
+  iconPunchDuration: 0.22
+  iconPunchDelay: 0.06
+  borderFadeInDuration: 0.15
+  badgeDelay: 0.14
+  badgeFadeInDuration: 0.12
+  badgePunchScale: 0.25
+  badgePunchDuration: 0.2
+  preShakeDelay: 0.16
+  preFlyOutDelay: 0.97
+  flyOutDuration: 0.35
+  postFlyOutDelay: 0.35
+  pulseScale: 1.05
+  pulseDuration: 0.3
   weaponIcon: {fileID: 8754248283615458764}
   nameLabel: {fileID: 6695922928524463935}
   barFill: {fileID: 4000887699340362258}
