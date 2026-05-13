@@ -184,20 +184,25 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
 #### 📸 Screenshots
 
 <p align="center">
-  <img src="Docs/Screenshots/aspect_20-9.png" width="720" alt="20:9 main aspect"/>
+  <img src="Docs/Screenshots/aspect_20-9.png" width="720" alt="20:9 Main Gameplay"/>
   <br/>
-  <sub><b>20:9</b> · main aspect</sub>
+  <sub><b>20:9</b> · Main Gameplay</sub>
 </p>
 
-<p align="center">
-  <img src="Docs/Screenshots/aspect_16-9.png" width="400" alt="16:9 death and revive"/>
-  &nbsp;&nbsp;
-  <img src="Docs/Screenshots/aspect_4-3.png" width="300" alt="4:3 full UI with inventory"/>
-  <br/>
-  <sub><b>16:9</b> · death &amp; revive</sub>
-  &nbsp;&nbsp;·&nbsp;&nbsp;
-  <sub><b>4:3</b> · full UI with inventory</sub>
-</p>
+<table align="center" border="0" cellspacing="0" cellpadding="14">
+<tr>
+<td align="center">
+<img src="Docs/Screenshots/aspect_16-9.png" height="240" alt="16:9 Death and Revive"/>
+<br/>
+<sub><b>16:9</b> · Death &amp; Revive</sub>
+</td>
+<td align="center">
+<img src="Docs/Screenshots/aspect_4-3.png" height="240" alt="4:3 Inventory Layout"/>
+<br/>
+<sub><b>4:3</b> · Inventory Layout</sub>
+</td>
+</tr>
+</table>
 
 #### 🚀 Build and Release
 
