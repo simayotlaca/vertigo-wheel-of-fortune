@@ -192,22 +192,6 @@ I submitted slightly later than planned because I refactored the UI from a mostl
 
 ---
 
-## 🚀 Build / Release
-
-### 🪖 Android APK
-- `Tools → Build → Android APK` or `Tools → Build → Android APK + Run`
-- Bundle id: `com.simay.vertigowheel`
-- AndroidMinSdkVersion: 22
-- Output: `Build/VertigoWheel.apk`
-
-### 📦 GitHub Release
-The APK is shared via a GitHub Release rather than committed to the repo.
-
-### 📲 APK Download
-[**Download APK ✨**](https://drive.google.com/file/d/1VxuD5v-L_xG7tuDoB4XAF-BY3kkhfsjW/view?usp=sharing)
-
----
-
 ## 📸 Screenshots
 
 All screenshots live under `Docs/Screenshots/`.
@@ -226,6 +210,22 @@ All screenshots live under `Docs/Screenshots/`.
 ## 💌 Credits
 
 - **Developer:** Simay 🎀
+
+---
+
+## 🚀 Build / Release
+
+### 🪖 Android APK
+- `Tools → Build → Android APK` or `Tools → Build → Android APK + Run`
+- Bundle id: `com.simay.vertigowheel`
+- AndroidMinSdkVersion: 22
+- Output: `Build/VertigoWheel.apk`
+
+### 📦 GitHub Release
+The APK is shared via a GitHub Release rather than committed to the repo.
+
+### 📲 APK Download
+[**Download APK ✨**](https://drive.google.com/file/d/1VxuD5v-L_xG7tuDoB4XAF-BY3kkhfsjW/view?usp=sharing)
 
 ---
 
