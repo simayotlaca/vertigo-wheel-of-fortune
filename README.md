@@ -8,20 +8,6 @@
 
 ---
 
-## 💖 The Vibe
-
-Unity case study made for the **Vertigo Games** developer brief.
-Tap to spin, collect loot, dodge bombs, cash out at the perfect moment. 🎯
-
-| | |
-|---|---|
-| 🎮 Engine | Unity **2021.3.45f2 LTS** |
-| 📱 Target | Android · Landscape |
-| 🎬 Scene | Single (`SampleScene.unity`) |
-| 💌 Purpose | Vertigo Games developer case submission |
-
----
-
 ## 🌸 How to Play
 
 | Action | What happens |
