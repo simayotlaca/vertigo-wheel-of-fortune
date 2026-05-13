@@ -1,6 +1,8 @@
-# 🎀 Vertigo Wheel of Fortune 💣
+# 🎀 Spin sweet · cash out smart · don't get blown up 💣
 
-> A sweet little spin-the-wheel game where you collect rewards each spin and decide when to cash out — before a bomb crashes the party 💥
+###### a *Vertigo Wheel of Fortune* case study — Unity 2021.3.45f2
+
+> All glitter, all guns, one bad spin away from boom. Tap to spin, hoard your loot, exit before a bomb crashes the party. 💥
 
 ![gameplay](Docs/Screenshots/gameplay_20-9.gif)
 
