@@ -115,29 +115,21 @@ Spin states live in `Assets/Scripts/Wheel/Controller/`: `ReadyState`, `TurningSt
 
 #### 🍓 Project Structure
 
-<table align="center" border="0">
-<tr><td>
+<sub>
 
-> **Core Systems**
-> Game rules, object pooling, and shared formatters.
+> **Core Systems** — Game rules, object pooling, and shared formatters.
+>
+> **Wheel System** — Spin flow, state machine, reward sampling, and slice rendering.
+>
+> **UI Layer** — HUD, popups, reward list, MetaProgress, and button systems.
+>
+> **Exit Flow** — Run exit, death panels, revive flow.
+>
+> **Config Data** — ScriptableObject-driven rewards, zones, and theme setup.
+>
+> **Editor Tools** — Scene & UI builders, layout passes, validation audits.
 
-> **Wheel System**
-> Spin flow, state machine, reward sampling, and slice rendering.
-
-> **UI Layer**
-> HUD, popups, reward list, MetaProgress, and button systems.
-
-> **Exit Flow**
-> Run exit, death panels, revive flow.
-
-> **Config Data**
-> ScriptableObject-driven rewards, zones, and theme setup.
-
-> **Editor Tools**
-> Scene & UI builders, layout passes, validation audits.
-
-</td></tr>
-</table>
+</sub>
 
 ```
 Assets/
@@ -199,6 +191,8 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
 
 #### 💎 Engineering Decisions
 
+<sub>
+
 **Revive uses a one-shot logic flag, not a pool-level slot skip.** After paying gold to revive, the next spin gets one bomb-free guarantee via `forceNoBombNextSpin` on `WheelLogic`. If RNG lands on the bomb slot, we redirect to a neighbouring slice. The bomb slice is still visually on the wheel for that one spin. A pool-level skip would have meant rebuilding the slice list mid-flow; the logic-level guard was the smaller, safer change. The flag clears itself after a single spin.
 
 **MetaProgress rows are not pooled.** Built once when the panel opens. There are only a handful; pooling would add complexity without a real win.
@@ -208,6 +202,8 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
 **PlayerPrefs for persistence.** Enough for what the brief asks. A proper save file would be future work.
 
 **Timing note.** I submitted slightly later than planned because I refactored the UI from a code-driven setup into a prefab-based structure late in development. The current shape is closer to how production UI is usually authored.
+
+</sub>
 
 #### 📸 Screenshots
 
