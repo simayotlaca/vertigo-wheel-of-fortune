@@ -1,6 +1,6 @@
 # 🎀 Spin sweet · cash out smart · don't get blown up 💣
 
-###### a *Vertigo Wheel of Fortune* case study — Unity 2021.3.45f2
+###### a *Vertigo Wheel of Fortune* case study · Unity 2021.3.45f2
 
 > All glitter, all guns, one bad spin away from boom. Tap to spin, hoard your loot, exit before a bomb crashes the party. 💥
 
@@ -26,13 +26,13 @@ Tap to spin, collect loot, dodge bombs, cash out at the perfect moment. 🎯
 
 | Action | What happens |
 |---|---|
-| 🎡 Tap **SPIN** | The wheel turns, a reward lands in your *pending* stash |
-| 💰 Tap **EXIT** | Pending rewards move into your inventory forever ✨ |
-| 🛡️ Every **5th** spin | **Safe** zone — no bombs, just breathe |
-| 👑 Every **30th** spin | **Super** zone — the fancy stuff lives here |
-| 💣 Normal zones | A bomb might land. If it does, your run ends 💀 |
-| 🩹 Revive | Pay gold to keep your loot — each revive costs more |
-| 💾 Persistence | Banked rewards survive between sessions (PlayerPrefs) |
+| Tap **SPIN** | The wheel turns, a reward lands in your *pending* stash |
+| Tap **EXIT** | Pending rewards move into your inventory forever ✨ |
+| Every **5th** spin | **Safe** zone, no bombs, just breathe |
+| Every **30th** spin | **Super** zone, the fancy stuff lives here |
+| Normal zones | A bomb might land. If it does, your run ends 💀 |
+| Revive | Pay gold to keep your loot. Each revive costs more |
+| Persistence | Banked rewards survive between sessions (PlayerPrefs) |
 
 ---
 
@@ -48,12 +48,12 @@ Tap to spin, collect loot, dodge bombs, cash out at the perfect moment. 🎯
 
 The bits I'm a little proud of:
 
-- 🧪 **Testable wheel logic** — `WheelLogic` is pure C#, no MonoBehaviour, runs without a scene
-- 🎭 **Clean state machine** — `Ready → Turning → Landing → Reward → Death`, each state owns its own transitions
-- 🍓 **ScriptableObject-driven content** — all wheel, zone & reward data lives under `Assets/Configs/`
-- 🎀 **One-button rebuild** — `Vertigo → Build → Full Rebuild` reconstructs scene + UI from scratch
-- 🎯 **Reward sampler with quotas** — per-category limits + a small dedupe so the same icon never sits next to itself
-- 🪖 **Object pooling** — reward icons & list rows, no GC hiccups during spins
+- 🧪 **Testable wheel logic**: `WheelLogic` is pure C#, no MonoBehaviour, runs without a scene
+- 🎭 **Clean state machine**: `Ready → Turning → Landing → Reward → Death`, each state owns its own transitions
+- 🍓 **ScriptableObject-driven content**: all wheel, zone & reward data lives under `Assets/Configs/`
+- 🎀 **One-button rebuild**: `Vertigo → Build → Full Rebuild` reconstructs scene + UI from scratch
+- 🎯 **Reward sampler with quotas**: per-category limits + a small dedupe so the same icon never sits next to itself
+- 🪖 **Object pooling**: reward icons & list rows, no GC hiccups during spins
 
 ---
 
@@ -79,19 +79,19 @@ flowchart TD
     PostReviveReady -->|one bomb-free spin granted| Ready
 ```
 
-States live in `Assets/Scripts/Wheel/Controller/` — `ReadyState`, `TurningState`, `LandingState`, `RewardState`, `DeathState`, `PostReviveReadyState`. They all derive from `WheelStateBase`. States never call each other directly; only `WheelController` performs transitions.
+States live in `Assets/Scripts/Wheel/Controller/`: `ReadyState`, `TurningState`, `LandingState`, `RewardState`, `DeathState`, `PostReviveReadyState`. They all derive from `WheelStateBase`. States never call each other directly; only `WheelController` performs transitions.
 
 ### What happens when you press SPIN 🎡
 
 1. 🎀 Spin button → `WheelController.RequestSpin()`
 2. 🎲 `WheelLogic.Spin(zone)` produces a `SpinResult` (which slice, how much, is it a bomb?)
 3. 🌀 The wheel turns via `WheelView.SpinTo(...)` using PrimeTween
-4. 🎁 On stop, the reward is added to `RewardInventory` as *pending* — or, if it's a bomb 💥, we transition into the Death state
+4. 🎁 On stop, the reward is added to `RewardInventory` as *pending*. If it's a bomb 💥, we transition into the Death state
 5. 💰 Tap **EXIT** and pending rewards move into the banked inventory
 
 ### Logic ↔ UI
 
-`WheelLogic` is pure C# — no MonoBehaviour, runs without a scene. The UI side never touches it directly; it subscribes to `WheelController` events:
+`WheelLogic` is pure C#, no MonoBehaviour, runs without a scene. The UI side never touches it directly; it subscribes to `WheelController` events:
 `OnZoneChanged`, `OnRewardEarned`, `OnDeathHit`, `OnRewardsBanked`, `OnRevived`, `OnRunEnded`.
 
 ### ExitFlow 🚪
@@ -121,24 +121,24 @@ Run it once after a fresh checkout and you're good to go ✨
 ```
 Assets/
   Scripts/
-    Core/                  — ObjectPool, GameRules, formatters
+    Core/                  · ObjectPool, GameRules, formatters
     Wheel/
-      Controller/          — WheelController + state machine
-      Logic/               — WheelLogic + reward sampler (no MonoBehaviour)
-      View/                — WheelView, SliceView, spin animator
-      Config/              — ScriptableObject configs
-      Rewards/             — RewardInventory, currency, formatter
-      UI/                  — HUD, popups, reward list, MetaProgress
-      ExitFlow/            — RunExitController, exit pill, revive
-      MetaProgress/        — per-run weapon point progression
-      Persistence/         — PlayerProgress (PlayerPrefs)
+      Controller/          · WheelController + state machine
+      Logic/               · WheelLogic + reward sampler (no MonoBehaviour)
+      View/                · WheelView, SliceView, spin animator
+      Config/              · ScriptableObject configs
+      Rewards/             · RewardInventory, currency, formatter
+      UI/                  · HUD, popups, reward list, MetaProgress
+      ExitFlow/            · RunExitController, exit pill, revive
+      MetaProgress/        · per-run weapon point progression
+      Persistence/         · PlayerProgress (PlayerPrefs)
   Editor/
-    Builders/              — scene + UI builders, validation audits
-    Layout/                — UILayoutBuilder + layout passes
-    Drawers/               — custom inspectors
-  Configs/                 — SO assets (Zones, Rewards, MetaProgress, ...)
-  Atlases/                 — Sprite Atlas files
-  Scenes/SampleScene.unity — entry scene
+    Builders/              · scene + UI builders, validation audits
+    Layout/                · UILayoutBuilder + layout passes
+    Drawers/               · custom inspectors
+  Configs/                 · SO assets (Zones, Rewards, MetaProgress, ...)
+  Atlases/                 · Sprite Atlas files
+  Scenes/SampleScene.unity · entry scene
 ```
 
 ---
@@ -153,13 +153,13 @@ Assets/
 
 ---
 
-## 🌷 Unity / UI Brief — Checklist
+## 🌷 Unity / UI Brief Checklist
 
 - ✅ Canvas Scaler `ScaleWithScreenSize`, reference 1920×1080, Expand mode
 - ✅ 20:9 / 16:9 / 4:3 aspect ratios via Canvas Scaler Expand + center anchoring
-- ✅ TextMeshPro on all labels — changeable labels use the `*_value` suffix (e.g. `reviveCost_value`)
+- ✅ TextMeshPro on all labels. Changeable labels use the `*_value` suffix (e.g. `reviveCost_value`)
 - ✅ UI hierarchy follows `ui_image_*` / `ui_button_*` naming (general → specific)
-- ✅ Decorative graphics have `raycastTarget` and `maskable` off — an editor pass enforces this across the scene
+- ✅ Decorative graphics have `raycastTarget` and `maskable` off. An editor pass enforces this across the scene
 - ✅ ScriptableObjects under `Assets/Configs/` store all wheel, zone and reward content
 - ✅ PrimeTween used for UI tweens
 - ✅ Sprite Atlas split into 6 categories
@@ -176,7 +176,7 @@ After paying gold to revive, the next spin gets one bomb-free guarantee via `for
 **Why:** a pool-level skip would have meant rebuilding the slice list mid-flow. The logic-level guard was the smaller, safer change. The flag clears itself after a single spin so subsequent zones behave normally.
 
 ### 🦋 PrimeTween instead of a custom tween system
-The only custom animation code is the reward-fly burst — a small particle effect.
+The only custom animation code is the reward-fly burst, a small particle effect.
 **Why:** wheel cases aren't the place to reinvent a tween library.
 
 ### 🍓 MetaProgress rows aren't pooled
@@ -198,13 +198,13 @@ I submitted slightly later than planned because I refactored the UI from a mostl
 
 All screenshots live under `Docs/Screenshots/`.
 
-### 🎯 20:9 — main aspect
+### 🎯 20:9 · main aspect
 ![20:9](Docs/Screenshots/aspect_20-9.png)
 
-### 💀 16:9 — death & revive
+### 💀 16:9 · death & revive
 ![16:9](Docs/Screenshots/aspect_16-9.png)
 
-### 🔫 4:3 — full UI with inventory & MetaProgress
+### 🔫 4:3 · full UI with inventory & MetaProgress
 ![4:3](Docs/Screenshots/aspect_4-3.png)
 
 ---
