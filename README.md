@@ -16,9 +16,11 @@
 
 <br/>
 
-A Unity case study for the **Vertigo Games** developer brief. Spin the wheel, hoard rewards in a pending stash, exit before a bomb ends the run.
+<sub>A Unity case study for the **Vertigo Games** developer brief. Spin the wheel, hoard rewards in a pending stash, exit before a bomb ends the run.</sub>
 
 #### 🌸 How to Play
+
+<sub>
 
 | Action | Effect |
 |---|---|
@@ -30,7 +32,11 @@ A Unity case study for the **Vertigo Games** developer brief. Spin the wheel, ho
 | Revive | Pay gold to keep your loot. Each revive costs more |
 | Persistence | Banked rewards survive between sessions (PlayerPrefs) |
 
+</sub>
+
 #### ✨ Technical Highlights
+
+<sub>
 
 - Pure C# wheel logic separated from the Unity scene lifecycle
 - Deterministic rebuild pipeline for scene/UI generation
@@ -40,6 +46,8 @@ A Unity case study for the **Vertigo Games** developer brief. Spin the wheel, ho
 **Animation Stack** &nbsp;·&nbsp; *PrimeTween, struct-based, allocation-conscious*
 
 I used PrimeTween for UI/gameplay transitions because its allocation-conscious API and struct-based tween flow fit well with the project's lightweight runtime architecture. The wheel relies heavily on chained transitions, strike animations, overlays, and repeated UI motion during spins, so keeping animation flow predictable and easy to orchestrate was more important than building a custom tween solution from scratch.
+
+</sub>
 
 #### ⚔️ Architecture
 
@@ -87,6 +95,8 @@ I used PrimeTween for UI/gameplay transitions because its allocation-conscious A
 └──────────────────────────────────────────────────────────┘
 ```
 
+<sub>
+
 Spin states live in `Assets/Scripts/Wheel/Controller/`: `ReadyState`, `TurningState`, `LandingState`, `RewardState`, `DeathState`, `PostReviveReadyState`. They derive from `WheelStateBase`. States never call each other directly; only `WheelController` performs transitions.
 
 **Press SPIN**
@@ -107,7 +117,11 @@ Spin states live in `Assets/Scripts/Wheel/Controller/`: `ReadyState`, `TurningSt
 
 **Full Rebuild** &nbsp;·&nbsp; `Vertigo → Build → Full Rebuild` runs `WheelDistributionApplier.Apply()` (zone distributions) and `WheelSceneSetup.Build()` (Canvas, wheel, UI hierarchy).
 
+</sub>
+
 #### 🎨 Tech Stack
+
+<sub>
 
 - **PrimeTween** for UI animation (panels, scale punches, wheel rotation)
 - One custom particle effect for the reward-fly burst
@@ -115,7 +129,11 @@ Spin states live in `Assets/Scripts/Wheel/Controller/`: `ReadyState`, `TurningSt
 - **TextMeshPro** on every label
 - Canvas Scaler `ScaleWithScreenSize`, reference 1920×1080, Expand mode
 
+</sub>
+
 #### 🪖 Performance Notes
+
+<sub>
 
 The hot path is the spin loop. Every choice below keeps it allocation-free, draw-call-light, and free of mid-spin frame spikes.
 
@@ -137,6 +155,8 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
 
 - Single scene (`SampleScene.unity`). No async loads, no additive scenes.
 - `Vertigo → Build → Full Rebuild` reconstructs the UI from configs at edit time. Nothing rebuilds itself at runtime.
+
+</sub>
 
 #### 💎 Engineering Decisions
 
@@ -176,6 +196,8 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
 
 #### 🚀 Run & Build
 
+<sub>
+
 **Run in Unity**
 
 1. Open the project in **Unity 2021.3.45f2 LTS**
@@ -186,6 +208,8 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
 
 - `Tools → Build → Android APK` (or `Tools → Build → Android APK + Run` to deploy to a connected device)
 - Output: `Build/VertigoWheel.apk`
+
+</sub>
 
 <div align="center">
 
