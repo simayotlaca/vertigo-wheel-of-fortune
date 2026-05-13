@@ -1,10 +1,10 @@
-# Vertigo Wheel of Fortune
+# Vertigo Wheel of Fortune 🎀
 
 A Unity 2021.3.45f2 case study for the Vertigo Games developer brief. Spin the wheel, hoard rewards in a pending stash, and exit before a bomb ends the run.
 
 ![gameplay](Docs/Screenshots/gameplay_20-9.gif)
 
-### How to Play
+### 🌸 How to Play
 
 | Action | Effect |
 |---|---|
@@ -16,13 +16,13 @@ A Unity 2021.3.45f2 case study for the Vertigo Games developer brief. Spin the w
 | Revive | Pay gold to keep your loot. Each revive costs more |
 | Persistence | Banked rewards survive between sessions (PlayerPrefs) |
 
-### How to Run
+### 🌼 How to Run
 
 1. Open the project in Unity 2021.3.45f2 LTS
 2. Run `Vertigo → Build → Full Rebuild` once after a fresh checkout
 3. Open `Assets/Scenes/SampleScene.unity` and press **Play**
 
-### Highlights
+### ✨ Highlights
 
 - `WheelLogic` is pure C#, runs without a scene, fully testable
 - State machine `Ready → Turning → Landing → Reward → Death`, each state owns its transitions
@@ -31,7 +31,7 @@ A Unity 2021.3.45f2 case study for the Vertigo Games developer brief. Spin the w
 - Reward sampler with per-category quotas and adjacency dedupe
 - Reward icons and list rows pooled, no GC during spins
 
-### Architecture
+### ⚔️ Architecture
 
 ```text
 ┌──────────────────────────────────────────────────────────┐
@@ -110,7 +110,7 @@ Spin states live in `Assets/Scripts/Wheel/Controller/`: `ReadyState`, `TurningSt
 - `WheelDistributionApplier.Apply()` re-applies slice distributions to zones from config
 - `WheelSceneSetup.Build()` rebuilds the scene's Canvas, wheel and UI hierarchy from scratch
 
-### Project Structure
+### 🍓 Project Structure
 
 ```
 Assets/
@@ -135,7 +135,7 @@ Assets/
   Scenes/SampleScene.unity · entry scene
 ```
 
-### Tech Stack
+### 🎨 Tech Stack
 
 - PrimeTween for UI animation (panels, scale punches, wheel rotation)
 - One custom particle effect for the reward-fly burst that lands on the side panel
@@ -143,7 +143,7 @@ Assets/
 - TextMeshPro on every label
 - Canvas Scaler `ScaleWithScreenSize`, reference 1920×1080, Expand mode
 
-### Performance Notes
+### 🪖 Performance Notes
 
 The hot path is the spin loop. Every choice below keeps it allocation-free, draw-call-light, and free of mid-spin frame spikes.
 
@@ -166,7 +166,7 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
 - Single scene (`SampleScene.unity`). No async loads, no additive scenes.
 - `Vertigo → Build → Full Rebuild` reconstructs the UI from configs at edit time. Nothing rebuilds itself at runtime.
 
-### Engineering Decisions
+### 💎 Engineering Decisions
 
 **Revive uses a one-shot logic flag, not a pool-level slot skip.** After paying gold to revive, the next spin gets one bomb-free guarantee via `forceNoBombNextSpin` on `WheelLogic`. If RNG lands on the bomb slot, we redirect to a neighbouring slice. The bomb slice is still visually on the wheel for that one spin. A pool-level skip would have meant rebuilding the slice list mid-flow; the logic-level guard was the smaller, safer change. The flag clears itself after a single spin so subsequent zones behave normally.
 
@@ -180,7 +180,7 @@ The hot path is the spin loop. Every choice below keeps it allocation-free, draw
 
 **Timing note.** I submitted slightly later than planned because I refactored the UI from a mostly code-driven setup into a more standard prefab-based structure late in development. The current shape is closer to how production UI is usually authored.
 
-### Screenshots
+### 📸 Screenshots
 
 All screenshots live under `Docs/Screenshots/`.
 
@@ -196,7 +196,7 @@ All screenshots live under `Docs/Screenshots/`.
 
 ![4:3](Docs/Screenshots/aspect_4-3.png)
 
-### Build and Release
+### 🚀 Build and Release
 
 **Android APK**
 
