@@ -1,5 +1,19 @@
 using UnityEngine;
 
+//öncelikle burayı çözmek için çok fazla yol denedim. amacım bana verilen demo_content deki
+//iconların tasarım farkını elimden geldiğince en aza indirmekti. aynı tarza sahip iconlar, wheel 
+//e sürekli gelebilirdi çünkü her zone için kurduğum pool yapılarındaki kurallarım, her turda
+//1 adet altın, 1 adet kurukafa gelmesini(normal zone'da) sağlıyordu
+//ben burada benim için kafa karıştırıcı olabilecekleri 3 sınıfa bölüp bu kısımları birer aday olarak pool
+//a koymak için oluşturdum. 
+
+
+
+//RewardTier: hangi zone'da düşebilir (Normal/Safe/Super)
+//RewardKind: oyun mekaniği açısından ne (Currency, Weapon, Death...)
+//RewardVisualCategory: görsel olarak hangi grupta (Cash/Coin/Weapon...)
+
+
 public enum RewardTier
 {
     Normal = 0,
@@ -34,6 +48,9 @@ public enum RewardVisualCategory
 
     Throwable
 }
+
+
+
 
 [CreateAssetMenu(fileName = "RewardDefinition", menuName = "Wheel/RewardDefinition")]
 public class RewardDefinition : ScriptableObject
