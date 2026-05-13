@@ -1,15 +1,15 @@
-# 🎀 Vertigo Wheel of Fortune ✨
+# 🎀 Vertigo Wheel of Fortune 💣
 
-> A sweet little spin-the-wheel game where you collect rewards each spin and decide when to cash out — before a bomb crashes the party 💣
+> A sweet little spin-the-wheel game where you collect rewards each spin and decide when to cash out — before a bomb crashes the party 💥
 
-![20:9 aspect](Docs/Screenshots/aspect_20-9.png)
+![gameplay](Docs/Screenshots/gameplay_20-9.gif)
 
 ---
 
 ## 💖 The Vibe
 
 Unity case study made for the **Vertigo Games** developer brief.
-Tap to spin, collect rewards, dodge bombs, cash out at the perfect moment.
+Tap to spin, collect loot, dodge bombs, cash out at the perfect moment. 🎯
 
 | | |
 |---|---|
@@ -28,17 +28,17 @@ Tap to spin, collect rewards, dodge bombs, cash out at the perfect moment.
 | 💰 Tap **EXIT** | Pending rewards move into your inventory forever ✨ |
 | 🛡️ Every **5th** spin | **Safe** zone — no bombs, just breathe |
 | 👑 Every **30th** spin | **Super** zone — the fancy stuff lives here |
-| 💣 Normal zones | A bomb might land. If it does, the run ends |
-| 🌷 Revive | Pay gold to keep your loot — each revive costs more |
+| 💣 Normal zones | A bomb might land. If it does, your run ends 💀 |
+| 🩹 Revive | Pay gold to keep your loot — each revive costs more |
 | 💾 Persistence | Banked rewards survive between sessions (PlayerPrefs) |
 
 ---
 
 ## 🌼 How to Run
 
-1. Open the project in **Unity 2021.3.45f2 LTS**
-2. Run `Vertigo → Build → Full Rebuild` once after a fresh checkout
-3. Open `Assets/Scenes/SampleScene.unity` and press **Play** ▶️
+1. 💝 Open the project in **Unity 2021.3.45f2 LTS**
+2. 🔧 Run `Vertigo → Build → Full Rebuild` once after a fresh checkout
+3. 🎬 Open `Assets/Scenes/SampleScene.unity` and press **Play** ▶️
 
 ---
 
@@ -50,12 +50,12 @@ The bits I'm a little proud of:
 - 🎭 **Clean state machine** — `Ready → Turning → Landing → Reward → Death`, each state owns its own transitions
 - 🍓 **ScriptableObject-driven content** — all wheel, zone & reward data lives under `Assets/Configs/`
 - 🎀 **One-button rebuild** — `Vertigo → Build → Full Rebuild` reconstructs scene + UI from scratch
-- 💫 **Reward sampler with quotas** — per-category limits + a small dedupe so the same icon never sits next to itself
-- 🌺 **Object pooling** — reward icons & list rows, no GC hiccups during spins
+- 🎯 **Reward sampler with quotas** — per-category limits + a small dedupe so the same icon never sits next to itself
+- 🪖 **Object pooling** — reward icons & list rows, no GC hiccups during spins
 
 ---
 
-## 🌺 Architecture
+## ⚔️ Architecture
 
 ### Spin state machine
 
@@ -74,12 +74,12 @@ stateDiagram-v2
 
 States live in `Assets/Scripts/Wheel/Controller/` — `ReadyState`, `TurningState`, `LandingState`, `RewardState`, `DeathState`, `PostReviveReadyState`. They all derive from `WheelStateBase`. States never call each other directly; only `WheelController` performs transitions.
 
-### What happens when you press SPIN
+### What happens when you press SPIN 🎡
 
 1. 🎀 Spin button → `WheelController.RequestSpin()`
 2. 🎲 `WheelLogic.Spin(zone)` produces a `SpinResult` (which slice, how much, is it a bomb?)
 3. 🌀 The wheel turns via `WheelView.SpinTo(...)` using PrimeTween
-4. 🎁 On stop, the reward is added to `RewardInventory` as *pending* — or, if it's a bomb, we transition into the Death state
+4. 🎁 On stop, the reward is added to `RewardInventory` as *pending* — or, if it's a bomb 💥, we transition into the Death state
 5. 💰 Tap **EXIT** and pending rewards move into the banked inventory
 
 ### Logic ↔ UI
@@ -87,19 +87,19 @@ States live in `Assets/Scripts/Wheel/Controller/` — `ReadyState`, `TurningStat
 `WheelLogic` is pure C# — no MonoBehaviour, runs without a scene. The UI side never touches it directly; it subscribes to `WheelController` events:
 `OnZoneChanged`, `OnRewardEarned`, `OnDeathHit`, `OnRewardsBanked`, `OnRevived`, `OnRunEnded`.
 
-### ExitFlow
+### ExitFlow 🚪
 
 `RunExitController` orchestrates the exit and death panels (`ExitFlowState`). In the EXIT flow, pending rewards move into the inventory. In the death flow, the revive button calls `WheelController.TryRevive()`. Revive cost grows each time: `reviveCurrencyCost * (1 + revive_count)`.
 
-### MetaProgress
+### MetaProgress 🔫
 
 `MetaProgressionService` tracks weapon points earned during the run and reflects them on the MetaProgress panel. Resets when the run ends.
 
-### Persistence
+### Persistence 💾
 
 `PlayerProgress` stores cash, gold, and banked rewards in PlayerPrefs. Writes happen on bank, revive, app pause, and quit. Reads happen once on `Start`.
 
-### Full Rebuild
+### Full Rebuild 🔧
 
 `Vertigo → Build → Full Rebuild` does two things:
 - `WheelDistributionApplier.Apply()` re-applies slice distributions to zones from config
@@ -165,7 +165,7 @@ Assets/
 
 The interesting trade-offs, and *why*:
 
-### 🌷 Revive uses a one-shot logic flag, not a pool-level slot skip
+### 🩹 Revive uses a one-shot logic flag, not a pool-level slot skip
 After paying gold to revive, the next spin gets one bomb-free guarantee via `forceNoBombNextSpin` on `WheelLogic`. If RNG lands on the bomb slot, we redirect to a neighbouring slice. The bomb slice is still visually on the wheel for that one spin.
 **Why:** a pool-level skip would have meant rebuilding the slice list mid-flow. The logic-level guard was the smaller, safer change. The flag clears itself after a single spin so subsequent zones behave normally.
 
@@ -188,15 +188,15 @@ I submitted slightly later than planned because I refactored the UI from a mostl
 
 ---
 
-## 🎀 Build / Release
+## 🚀 Build / Release
 
-### Android APK
+### 🪖 Android APK
 - `Tools → Build → Android APK` or `Tools → Build → Android APK + Run`
 - Bundle id: `com.simay.vertigowheel`
 - AndroidMinSdkVersion: 22
 - Output: `Build/VertigoWheel.apk`
 
-### GitHub Release
+### 📦 GitHub Release
 The APK is shared via a GitHub Release rather than committed to the repo.
 
 ### 📲 APK Download
@@ -206,20 +206,23 @@ The APK is shared via a GitHub Release rather than committed to the repo.
 
 ## 📸 Screenshots
 
-Screenshots live under `Docs/Screenshots/`.
+All screenshots live under `Docs/Screenshots/`.
 
-| Aspect | Screenshot | Video |
-|---|---|---|
-| **20:9** | ![20:9](Docs/Screenshots/aspect_20-9.png) | ![gameplay](Docs/Screenshots/gameplay_20-9.gif) |
-| **16:9** | ![16:9](Docs/Screenshots/aspect_16-9.png) | _TODO_ |
-| **4:3**  | ![4:3](Docs/Screenshots/aspect_4-3.png) | _TODO_ |
+### 🎯 20:9 — main aspect
+![20:9](Docs/Screenshots/aspect_20-9.png)
+
+### 💀 16:9 — death & revive
+![16:9](Docs/Screenshots/aspect_16-9.png)
+
+### 🔫 4:3 — full UI with inventory & MetaProgress
+![4:3](Docs/Screenshots/aspect_4-3.png)
 
 ---
 
 ## 💌 Credits
 
-- **Developer:** Simay
+- **Developer:** Simay 🎀
 
 ---
 
-<p align="center">made with 🎀 and a lot of spin retries</p>
+<p align="center">made with 🎀 and a lot of spin retries 💣</p>
